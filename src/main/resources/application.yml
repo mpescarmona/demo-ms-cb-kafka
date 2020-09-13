@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: demo-microservices-cb-kafka
+  data:
+    mongodb:
+      uri: mongodb://mongodb:27017/demo-ms-cb-kafka
+#      uri: mongodb://root:root@localhost:27017/demo-ms-cb-kafka
