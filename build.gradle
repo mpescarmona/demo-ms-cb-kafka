@@ -33,6 +33,9 @@ dependencies {
 	// MongoDb starter
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
+	// Faker library to generate fake data
+	implementation 'com.github.javafaker:javafaker:0.15'
+
 	// lombok support
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
