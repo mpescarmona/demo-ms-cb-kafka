@@ -36,6 +36,13 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
 	implementation 'org.springframework.kafka:spring-kafka'
 
+	// Circuit breaker implementation of Resilience4J
+	implementation "io.github.resilience4j:resilience4j-spring-boot2:${resilience4jVersion}"
+//	compile("io.github.resilience4j:resilience4j-all:${resilience4jVersion}") // Optional, only required when you want to use the Decorators class
+	implementation "io.github.resilience4j:resilience4j-circuitbreaker:${resilience4jVersion}"
+	implementation "io.github.resilience4j:resilience4j-micrometer:${resilience4jVersion}"
+	implementation "io.micrometer:micrometer-registry-prometheus"
+
 	// MongoDb starter
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
