@@ -36,3 +36,40 @@ spring:
 logging:
   level:
     root: INFO
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: false
+        slidingWindowSize: 3                                # Tamaño de ventana deslizante
+        minimumNumberOfCalls: 3                             # Número mínimo de llamadas que se requieren antes de calcular la tasa de error
+        permittedNumberOfCallsInHalfOpenState: 3            # Numero de llamadas permitidas en HALF-OPEN
+        automaticTransitionFromOpenToHalfOpenEnabled: true  # Se activa el paso de Open a Half-Open de forma automatica al finalizar waitDurationInOpenState sin que tenga que esperar que se realice alguna llamada
+        waitDurationInOpenState: 15s                        # Tiempo (segundos) de espera en estado Open antes de pasar a Half-Open
+        failureRateThreshold: 50                            # Si porcentaje de falla >= failureRateThreshold se abre (OPEN) el circuito
+        slowCallDurationThreshold: 10s                      # Tiempo (segundos) a partir del cual una llamada se considerará lenta
+        slowCallRateThreshold: 100                          # Si porcentaje de llamadas lentas >= slowCallRateThreshold se abre (OPEN) el circuito
+    instances:
+      # Configuration for MongoDb instance
+      mongoDbCircuitBreakerInstance:
+        registerHealthIndicator: true
+        baseConfig: default
+        permittedNumberOfCallsInHalfOpenState: 1            # Numero de llamadas permitidas en HALF-OPEN
+        slowCallDurationThreshold: 1s                       # Tiempo (segundos) a partir del cual una llamada se considerará lenta
+        slidingWindowType: COUNT_BASED                      # Tipo de ventana deslizante. COUNT_BASED cuenta por failureRateThreshold e ignora slowCallDurationThreshold
+        recordExceptions:
+        ignoreExceptions:
+
+management.endpoints.web.exposure.include: '*'
+management.endpoint.health.show-details: always
+
+management.health.diskspace.enabled: false
+management.health.circuitbreakers.enabled: true
+management.health.bulkheads.enabled: false
+management.health.ratelimiters.enabled: false
+management.health.retries.enabled: false
+
+management.metrics.tags.application: ${spring.application.name}
+management.metrics.distribution.percentiles-histogram.http.server.requests: true
+management.metrics.distribution.percentiles-histogram.resilience4j.circuitbreaker.calls: true
