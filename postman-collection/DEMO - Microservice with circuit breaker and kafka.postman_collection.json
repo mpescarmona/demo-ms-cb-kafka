@@ -1,0 +1,1343 @@
+{
+	"info": {
+		"_postman_id": "e2183201-3bbb-4b9d-bae8-b242b806d2e7",
+		"name": "DEMO - Microservice with circuit breaker and kafka",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Circuit breaker",
+			"item": [
+				{
+					"name": "Sets the circuit breaker to CLOSED status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5752ef3b-3a6d-4229-83cf-84574ccac69c",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function () {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Response body should be an Array\", function () {",
+									"    pm.expect(jsonResponse).to.be.an('Array');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/circuit-breaker/close",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"circuit-breaker",
+								"close"
+							],
+							"query": [
+								{
+									"key": "productBrand",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productAttribute",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productNumber",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "ref",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disables the circuit breaker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "727c6312-afd1-4075-9d62-71faae8b9c1f",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function () {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Response body should be an Array\", function () {",
+									"    pm.expect(jsonResponse).to.be.an('Array');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/circuit-breaker/disable",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"circuit-breaker",
+								"disable"
+							],
+							"query": [
+								{
+									"key": "productBrand",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productAttribute",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productNumber",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "ref",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Gets the circuit breaker status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74bc94f7-dde2-4f1b-b507-73877fbebb66",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function () {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Response body should be an Array\", function () {",
+									"    pm.expect(jsonResponse).to.be.an('Array');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/circuit-breaker/status",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"circuit-breaker",
+								"status"
+							],
+							"query": [
+								{
+									"key": "productBrand",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productAttribute",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productNumber",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "ref",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Fail",
+			"item": [
+				{
+					"name": "Gets the delay in seconds of mongoDb response to mimic an error and see how circuit breaker behaves",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e5fdf70a-43de-43c4-9e87-faaf4f8f157d",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response body should be a number\", function () {",
+									"    pm.expect(jsonResponse).to.be.a('number');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/fail/delay",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"fail",
+								"delay"
+							],
+							"query": [
+								{
+									"key": "productBrand",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productAttribute",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productNumber",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "ref",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sets the delay in seconds of mongoDb response to mimic a delayed response with mongoDb and see how circuit breaker behaves",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bd29aa94-d068-4175-98be-7ddcc9c9b968",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response body should be a number\", function () {",
+									"    pm.expect(jsonResponse).to.be.a('number');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    \"0\"",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/fail/delay",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"fail",
+								"delay"
+							],
+							"query": [
+								{
+									"key": "productBrand",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productAttribute",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productNumber",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "ref",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Likes",
+			"item": [
+				{
+					"name": "Get all the rock band likes in descending order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "827d5492-9184-407d-a856-2c65ac84a27c",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function () {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Response body should be an Array\", function () {",
+									"    pm.expect(jsonResponse).to.be.an('Array');",
+									"    if(jsonResponse.length > 0) {",
+									"        pm.expect(jsonResponse[0].id).to.be.a(\"string\");",
+									"        pm.expect(jsonResponse[0].rockBand).to.be.a(\"string\");",
+									"        pm.expect(jsonResponse[0].likes).to.be.a(\"number\");",
+									"        pm.expect(jsonResponse[0].created).to.be.a(\"string\");",
+									"        pm.expect(jsonResponse[0].updated).to.be.a(\"string\");",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/likes/all",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"likes",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get the rock band likes of the given rock band",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9ac77836-f8e6-4eef-8c92-28d463eaae6a",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function () {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Response body should be an Array\", function () {",
+									"    pm.expect(jsonResponse).to.be.an('Array');",
+									"    if(jsonResponse.length > 0) {",
+									"        pm.expect(jsonResponse[0].id).to.be.a(\"string\");",
+									"        pm.expect(jsonResponse[0].rockBand).to.be.a(\"string\");",
+									"        pm.expect(jsonResponse[0].likes).to.be.a(\"number\");",
+									"        pm.expect(jsonResponse[0].created).to.be.a(\"string\");",
+									"        pm.expect(jsonResponse[0].updated).to.be.a(\"string\");",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/likes/event?rockBandName=Pink Floyd",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"likes",
+								"event"
+							],
+							"query": [
+								{
+									"key": "rockBandName",
+									"value": "Pink Floyd"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get the sum of all the rock band likes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "01107d27-bfca-4b76-9eaa-4685d316982e",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response body should be a number\", function () {",
+									"    pm.expect(jsonResponse).to.be.a('number');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/likes/sum",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"likes",
+								"sum"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Gets the 'Top Ten' of most liked rock bands in descending order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "85302ee1-b4a5-446b-9332-958fbbe62443",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function () {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Response body should be an Array\", function () {",
+									"    pm.expect(jsonResponse).to.be.an('Array');",
+									"    if(jsonResponse.length > 0) {",
+									"        pm.expect(jsonResponse[0].id).to.be.a(\"string\");",
+									"        pm.expect(jsonResponse[0].rockBand).to.be.a(\"string\");",
+									"        pm.expect(jsonResponse[0].likes).to.be.a(\"number\");",
+									"        pm.expect(jsonResponse[0].created).to.be.a(\"string\");",
+									"        pm.expect(jsonResponse[0].updated).to.be.a(\"string\");",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/likes/top10",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"likes",
+								"top10"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Produce events",
+			"item": [
+				{
+					"name": "Produces the given quantity of rock band names in kafka",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c5cdd26f-a9df-438c-9051-f82e8665402f",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function () {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Response body should be an Array\", function () {",
+									"    pm.expect(jsonResponse).to.be.an('Array');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    \"10000\"",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/kafka/produce",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"kafka",
+								"produce"
+							],
+							"query": [
+								{
+									"key": "productBrand",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productAttribute",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productNumber",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "ref",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Status",
+			"item": [
+				{
+					"name": "Get status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1da7feeb-9b51-4c04-b401-8752f2cdcd1d",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function () {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Response body should be an object\", function () {",
+									"    pm.expect(jsonResponse).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/demo/status",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"demo",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Actuator",
+			"item": [
+				{
+					"name": "Actuator links",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "383cefe3-4221-4517-aebe-e439231f864a",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function () {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Response body should be an Object\", function () {",
+									"    pm.expect(jsonResponse).to.be.an('Object');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/actuator",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"actuator"
+							],
+							"query": [
+								{
+									"key": "productBrand",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productAttribute",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productNumber",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "ref",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e282ee6f-1c32-4cb7-911f-d612db211870",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function () {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Response body should be an Object\", function () {",
+									"    pm.expect(jsonResponse).to.be.an('Object');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/actuator/health",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"actuator",
+								"health"
+							],
+							"query": [
+								{
+									"key": "productBrand",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productAttribute",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productNumber",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "ref",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Kafka",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7d130e7a-fc7b-443d-a538-bc33c5b4da93",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function () {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Response body should be an Object\", function () {",
+									"    pm.expect(jsonResponse).to.be.an('Object');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/actuator/metrics/spring.cloud.stream.binder.kafka.offset",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"actuator",
+								"metrics",
+								"spring.cloud.stream.binder.kafka.offset"
+							],
+							"query": [
+								{
+									"key": "productBrand",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productAttribute",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productNumber",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "ref",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Prometheus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "40a223bc-88f9-4ff8-b377-9e3b234c22ee",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/actuator/prometheus",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"actuator",
+								"prometheus"
+							],
+							"query": [
+								{
+									"key": "productBrand",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productAttribute",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productNumber",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "ref",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Circuit breakers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "281a9fb8-20b5-4b41-bf14-1eb5eaa7b3c4",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function () {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Response body should be an Object\", function () {",
+									"    pm.expect(jsonResponse).to.be.an('Object');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/actuator/circuitbreakers",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"actuator",
+								"circuitbreakers"
+							],
+							"query": [
+								{
+									"key": "productBrand",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productAttribute",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productNumber",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "ref",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Circuit breaker events",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "77760beb-7ef2-4d22-a3ca-01b41098caf8",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Response should be a parsable JSON\", function () {",
+									"    pm.expect(jsonResponse).to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Response body should be an Object\", function () {",
+									"    pm.expect(jsonResponse).to.be.an('Object');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ms-kafka-cb-host}}:{{ms-kafka-cb-port}}/actuator/circuitbreakerevents",
+							"protocol": "http",
+							"host": [
+								"{{ms-kafka-cb-host}}"
+							],
+							"port": "{{ms-kafka-cb-port}}",
+							"path": [
+								"actuator",
+								"circuitbreakerevents"
+							],
+							"query": [
+								{
+									"key": "productBrand",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productAttribute",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "productNumber",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "ref",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "01dd8b68-98b6-4ae1-adb7-bc5c707e2187",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "42b4d478-33ce-4a63-840d-c4cabaa84ac8",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
