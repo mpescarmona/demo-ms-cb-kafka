@@ -1,0 +1,79 @@
+@startuml
+
+!define colorMicroservicio DarkSalmon
+!define colorKafka FFBBBB
+!define colorCircuitBreaker FFBBBB
+!define colorMongoDb FFBBBB
+
+Actor "Fans"
+Participant microservicio
+Database Kafka
+Participant "Circuit Breaker"
+Database MongoDb
+
+group Circuit breaker: CLOSED (Funcionamiento normal)
+    "Fans" -> microservicio: 10.000 fanáticos votan su banda de rock favorita
+    activate microservicio #colorMicroservicio
+    microservicio --> Kafka: Produce 10.000 eventos de votacióne en kafka
+    activate Kafka #colorKafka
+    microservicio <-- Kafka: Escucha eventos de votación de kafka
+    deactivate Kafka
+    microservicio -> "Circuit Breaker": Consulta estado de circuit breaker
+    activate "Circuit Breaker" #colorCircuitBreaker
+    microservicio <- "Circuit Breaker": devuelve **"CLOSED"**
+    microservicio -> MongoDb: Almacena el like de la votación en mongoDb
+    activate MongoDb #colorMongoDb
+    microservicio <- MongoDb: Devuelve la cantidad de likes de la banda
+    deactivate MongoDb
+    microservicio -> "Circuit Breaker": Consulta estado de circuit breaker
+    microservicio <- "Circuit Breaker": devuelve **"CLOSED"**
+    deactivate "Circuit Breaker"
+    "Fans" <- microservicio: Retorna el total de todos los likes procesados
+    deactivate microservicio
+end
+...
+group Circuit breaker: HALF-OPEN (Se produjeron algunas fallas)
+    "Fans" -> microservicio: Consulta el **Top ten** de bandas de rock
+    activate microservicio #colorMicroservicio
+    microservicio -> "Circuit Breaker": Consulta estado a circuit breaker
+    activate "Circuit Breaker" #colorCircuitBreaker
+    microservicio <- "Circuit Breaker": devuelve "true"
+    microservicio -> MongoDb: Obtiene el **Top ten** de bandas de rock desde MongoDb
+    activate MongoDb #colorMongoDb
+    microservicio <- MongoDb: Retorna el **Top ten** muy lentamente
+    deactivate MongoDb
+    microservicio -> "Circuit Breaker": Circuit breaker se pone en estado "Semi abierto"
+    microservicio <- "Circuit Breaker": devuelve **"HALF-OPEN"**
+    deactivate "Circuit Breaker"
+    "Fans" <- microservicio: Retorna lista de Top ten
+    deactivate microservicio
+end
+...
+group Circuit breaker: HALF-OPEN (Se produjeron algunas fallas)
+    "Fans" -> microservicio: Consulta la suma de likes de todas las bandas de rock
+    activate microservicio #colorMicroservicio
+    microservicio -> "Circuit Breaker": Consulta estado a circuit breaker
+    activate "Circuit Breaker" #colorCircuitBreaker
+    microservicio <- "Circuit Breaker": devuelve **"HALF-OPEN"**
+    microservicio -> MongoDb: Obtiene la suma de likes de todas las bandas de rock
+    activate MongoDb #colorMongoDb
+    microservicio <- MongoDb: Retorna la suma de likes de todas las bandas de rock muy lentamente
+    deactivate MongoDb
+    microservicio -> "Circuit Breaker": Circuit breaker se pone en estado "OPEN"
+    microservicio <- "Circuit Breaker": devuelve **"OPEN"**
+    deactivate "Circuit Breaker"
+    "Fans" <- microservicio: Retorna suma de likes
+    deactivate microservicio
+end
+...
+group Circuit breaker: OPEN (Demasiadas fallas como para continuar)
+    "Fans" -> microservicio: Consulta los likes de "Pink Floyd"
+    activate microservicio #colorMicroservicio
+    microservicio -> "Circuit Breaker": Consulta estado a circuit breaker
+    activate "Circuit Breaker" #colorCircuitBreaker
+    microservicio <- "Circuit Breaker": devuelve **"OPEN"**
+    deactivate "Circuit Breaker"
+    "Fans" <- microservicio: Retorna respuesta por defecto, o error reconocible (por ejemplo, **"-1"**)
+    deactivate microservicio
+end
+@enduml
