@@ -47,4 +47,5 @@ services:
     env_file:
       - ./docker/grafana/grafana.env
     volumes:
+      - ./docker/grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./docker/grafana/provisioning/:/etc/grafana/provisioning/
