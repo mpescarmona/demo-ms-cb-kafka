@@ -1,0 +1,76 @@
+@startuml
+!define Nube 0066ff/cce0ff
+!define Control AB361D/CF7C57
+!define TextoControl yellow
+!define Servicio Yellow/Orange
+!define cafca 339933/b3e6b3
+!define repositorios bf40bf/ecc6ec
+!define datos a3a3c2/e0e0eb
+!define db 8cb1d9/e0e0eb
+!define ColorFuente(clr) <font color=clr>
+
+title Microservicio con kafka y circuit breaker - Component Diagram
+
+skinparam ArrowThickness 2
+skinparam database {
+    backgroundColor #db
+}
+skinparam cloud {
+    backgroundColor #Nube
+}
+
+cloud Internet
+
+database "Kafka - Zookeeper" {
+    #datos [Topico: demo-microservices-cb-kafka-topic] as Topico
+}
+
+database MongoDb as MongoDb {
+    #datos [Likes]
+}
+
+node "Microservicio" {
+    package "Controllers" {
+      #Control [ColorFuente(TextoControl) Fail Simulator Controller] as FailController
+      #Control [ColorFuente(TextoControl) Likes Controller] as LikesController
+      #Control [ColorFuente(TextoControl) Producer Controller] as ProducerController
+    }
+
+    package "Services" {
+      #Servicio [Kafka Producer Service] as KafkaService
+      #Servicio [Rock Band Likes Service] as RockBandService
+      #Servicio [Fail Simulator Service] as FailService
+
+    }
+
+    package "Kafka" {
+      #cafca [Consumer]
+      #cafca [Producer]
+    }
+
+    node "Circuit Breaker" {
+        package "Repositories" {
+          #repositorios [Likes Repository] as LikesRepository
+        }
+    }
+}
+
+Topico <-[#mediumPurple]- Consumer                : "Escucha eventos\nde votaciones"
+Consumer -[#mediumPurple]-> RockBandService       : "Invoca a"
+RockBandService -[#mediumPurple]-> LikesRepository: "Actualiza\nvotos"
+
+Internet --> ProducerController     : "Solicita generar votos\n de \nbandas de rock"
+ProducerController --> KafkaService : "Simula votos \nde fanaticos"
+KafkaService --> Producer           : "Produce"
+Producer --> Topico                 : "Inyecta eventos\nde votaciones"
+
+Internet -[#blue]-> LikesController       : "Consulta\nvotos"
+LikesController -[#blue]-> RockBandService: "Consulta\nvotos"
+RockBandService -[#blue]-> LikesRepository: "Consulta\nvotos"
+
+Internet -[#green]-> FailController    : "Simula demora\nen MongoDb"
+FailController -[#green]-> FailService : "Establece demora\nen MongoDb"
+FailService -[#green]-> LikesRepository: "Demora ejecución\ndel repositorio"
+LikesRepository -[#green]-> Likes      : "Accede a likes"
+
+@enduml
