@@ -56,7 +56,7 @@ resilience4j:
         registerHealthIndicator: true
         baseConfig: default
         permittedNumberOfCallsInHalfOpenState: 1            # Numero de llamadas permitidas en HALF-OPEN
-        slowCallDurationThreshold: 1s                       # Tiempo (segundos) a partir del cual una llamada se considerará lenta
+        slowCallDurationThreshold: 2s                       # Tiempo (segundos) a partir del cual una llamada se considerará lenta
         slidingWindowType: COUNT_BASED                      # Tipo de ventana deslizante. COUNT_BASED cuenta por failureRateThreshold e ignora slowCallDurationThreshold
         recordExceptions:
         ignoreExceptions:
