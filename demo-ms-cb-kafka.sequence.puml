@@ -5,13 +5,18 @@
 !define colorCircuitBreaker FFBBBB
 !define colorMongoDb FFBBBB
 
+!define colorClosed 29a385
+!define colorHalfOpen AntiqueWhite
+!define colorHalfOpenFail ffdd99
+!define colorOpen fdebe7
+
 Actor "Fans"
 Participant microservicio
 Database Kafka
 Participant "Circuit Breaker"
 Database MongoDb
 
-group Circuit breaker: CLOSED (Funcionamiento normal)
+group #colorClosed Circuit breaker: CLOSED (Funcionamiento normal)
     "Fans" -> microservicio: 10.000 fanáticos votan su banda de rock favorita
     activate microservicio #colorMicroservicio
     microservicio --> Kafka: Produce 10.000 eventos de votacióne en kafka
@@ -32,7 +37,7 @@ group Circuit breaker: CLOSED (Funcionamiento normal)
     deactivate microservicio
 end
 ...
-group Circuit breaker: HALF-OPEN (Se produjeron algunas fallas)
+group #colorHalfOpen Circuit breaker: HALF-OPEN (Se produjeron algunas fallas)
     "Fans" -> microservicio: Consulta el **Top ten** de bandas de rock
     activate microservicio #colorMicroservicio
     microservicio -> "Circuit Breaker": Consulta estado a circuit breaker
@@ -49,7 +54,7 @@ group Circuit breaker: HALF-OPEN (Se produjeron algunas fallas)
     deactivate microservicio
 end
 ...
-group Circuit breaker: HALF-OPEN (Se produjeron algunas fallas)
+group #colorHalfOpenFail Circuit breaker: HALF-OPEN (Se produjeron algunas fallas)
     "Fans" -> microservicio: Consulta la suma de likes de todas las bandas de rock
     activate microservicio #colorMicroservicio
     microservicio -> "Circuit Breaker": Consulta estado a circuit breaker
@@ -66,7 +71,7 @@ group Circuit breaker: HALF-OPEN (Se produjeron algunas fallas)
     deactivate microservicio
 end
 ...
-group Circuit breaker: OPEN (Demasiadas fallas como para continuar)
+group #colorOpen Circuit breaker: OPEN (Demasiadas fallas como para continuar)
     "Fans" -> microservicio: Consulta los likes de "Pink Floyd"
     activate microservicio #colorMicroservicio
     microservicio -> "Circuit Breaker": Consulta estado a circuit breaker
