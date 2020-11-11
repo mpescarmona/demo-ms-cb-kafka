@@ -5,10 +5,10 @@
 !define colorCircuitBreaker FFBBBB
 !define colorMongoDb FFBBBB
 
-!define colorClosed 29a385
+!define colorClosed c1f0e4
 !define colorHalfOpen AntiqueWhite
 !define colorHalfOpenFail ffdd99
-!define colorOpen fdebe7
+!define colorOpen ffebe7
 
 Actor "Fans"
 Participant microservicio
