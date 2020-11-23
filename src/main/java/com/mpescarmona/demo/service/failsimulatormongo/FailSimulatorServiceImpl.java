@@ -24,7 +24,7 @@ public class FailSimulatorServiceImpl implements FailSimulatorService {
     @Override
     public void delayExecution() {
         try {
-            Thread.sleep(this.delay * 1000L);
+            Thread.sleep(this.delay);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
         }

@@ -29,15 +29,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class FailSimulatorController {
     private final FailSimulatorService failSimulatorService;
 
-    @ApiOperation("Gets the delay in seconds of mongoDb response to mimic an error and see how circuit breaker behaves")
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Retrieves the delay in seconds of mongoDb")})
+    @ApiOperation("Gets the delay in milliseconds of mongoDb response to mimic an error and see how circuit breaker behaves")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Retrieves the delay in milliseconds of mongoDb")})
     @GetMapping(value = "/delay")
     public ResponseEntity<Integer> getDelayInSeconds() {
         return ResponseEntity.ok(failSimulatorService.getDelayInSeconds());
     }
 
-    @ApiOperation("Sets the delay in seconds of mongoDb response to mimic a delayed response with mongoDb and see how circuit breaker behaves")
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Sets the delay in seconds of mongoDb response")})
+    @ApiOperation("Sets the delay in milliseconds of mongoDb response to mimic a delayed response with mongoDb and see how circuit breaker behaves")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Sets the delay in milliseconds of mongoDb response")})
     @PostMapping(value = "/delay",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
