@@ -19,7 +19,7 @@ Database MongoDb
 group #colorClosed Circuit breaker: CLOSED (Funcionamiento normal)
     "Fans" -> microservicio: 10.000 fanáticos votan su banda de rock favorita
     activate microservicio #colorMicroservicio
-    microservicio --> Kafka: Produce 10.000 eventos de votacióne en kafka
+    microservicio --> Kafka: Produce 10.000 eventos de votación en kafka
     activate Kafka #colorKafka
     microservicio <-- Kafka: Escucha eventos de votación de kafka
     deactivate Kafka
@@ -47,7 +47,8 @@ group #colorHalfOpen Circuit breaker: HALF-OPEN (Se produjeron algunas fallas)
     activate MongoDb #colorMongoDb
     microservicio <- MongoDb: Retorna el **Top ten** muy lentamente
     deactivate MongoDb
-    microservicio -> "Circuit Breaker": Circuit breaker se pone en estado "Semi abierto"
+    microservicio -> "Circuit Breaker": Circuit breaker se pone en estado **"HALF OPEN"**
+    note left: Esta llamada lenta NO supera el número\nadmitido de fallas en estado **HALF OPEN**
     microservicio <- "Circuit Breaker": devuelve **"HALF-OPEN"**
     deactivate "Circuit Breaker"
     "Fans" <- microservicio: Retorna lista de Top ten
@@ -55,16 +56,17 @@ group #colorHalfOpen Circuit breaker: HALF-OPEN (Se produjeron algunas fallas)
 end
 ...
 group #colorHalfOpenFail Circuit breaker: HALF-OPEN (Se produjeron algunas fallas)
-    "Fans" -> microservicio: Consulta la suma de likes de todas las bandas de rock
+    "Fans" -> microservicio: Consulta total de likes de las bandas de rock
     activate microservicio #colorMicroservicio
     microservicio -> "Circuit Breaker": Consulta estado a circuit breaker
     activate "Circuit Breaker" #colorCircuitBreaker
     microservicio <- "Circuit Breaker": devuelve **"HALF-OPEN"**
     microservicio -> MongoDb: Obtiene la suma de likes de todas las bandas de rock
     activate MongoDb #colorMongoDb
-    microservicio <- MongoDb: Retorna la suma de likes de todas las bandas de rock muy lentamente
+    microservicio <- MongoDb: Retorna total de likes de las bandas de rock muy lentamente
     deactivate MongoDb
-    microservicio -> "Circuit Breaker": Circuit breaker se pone en estado "OPEN"
+    microservicio -> "Circuit Breaker": Circuit breaker se pone en estado **"OPEN"**
+    note left: Esta llamada lenta supera el número\nadmitido de fallas en estado **HALF OPEN**.\n Por esto, el estado cambia a **OPEN**
     microservicio <- "Circuit Breaker": devuelve **"OPEN"**
     deactivate "Circuit Breaker"
     "Fans" <- microservicio: Retorna suma de likes

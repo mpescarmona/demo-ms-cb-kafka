@@ -32,7 +32,7 @@ database MongoDb as MongoDb {
 node "Microservicio" {
     package "Controllers" {
       #Control [ColorFuente(TextoControl) Fail Simulator Controller] as FailController
-      #Control [ColorFuente(TextoControl) Likes Controller] as LikesController
+      #Control [ColorFuente(TextoControl) Rock Band Likes Controller] as LikesController
       #Control [ColorFuente(TextoControl) Producer Controller] as ProducerController
     }
 
@@ -55,19 +55,23 @@ node "Microservicio" {
     }
 }
 
+'Flujo de consumidor de kafka
 Topico <-[#mediumPurple]- Consumer                : "Escucha eventos\nde votaciones"
 Consumer -[#mediumPurple]-> RockBandService       : "Invoca a"
 RockBandService -[#mediumPurple]-> LikesRepository: "Actualiza\nvotos"
 
+'Flujo de productor de kafka
 Internet --> ProducerController     : "Solicita generar votos\n de \nbandas de rock"
 ProducerController --> KafkaService : "Simula votos \nde fanaticos"
 KafkaService --> Producer           : "Produce"
 Producer --> Topico                 : "Inyecta eventos\nde votaciones"
 
+'Flujo de consulta de votos
 Internet -[#blue]-> LikesController       : "Consulta\nvotos"
 LikesController -[#blue]-> RockBandService: "Consulta\nvotos"
 RockBandService -[#blue]-> LikesRepository: "Consulta\nvotos"
 
+'Flujo de simulación de fallas
 Internet -[#green]-> FailController    : "Simula demora\nen MongoDb"
 FailController -[#green]-> FailService : "Establece demora\nen MongoDb"
 FailService -[#green]-> LikesRepository: "Demora ejecución\ndel repositorio"
