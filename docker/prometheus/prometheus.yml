@@ -1,6 +1,7 @@
 
 global:
-  scrape_interval:     1s # By default, scrape targets every 15 seconds.
+  # By default, scrape targets every 15 seconds.
+  scrape_interval: 1s
 
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
@@ -12,19 +13,20 @@ global:
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'prometheus'
-
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 1s
-
     static_configs:
       - targets: ['prometheus:9090']
 
-  - job_name:       'demo-microservices-cb-kafka'
-
+  - job_name: 'demo-microservices-cb-kafka'
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 1s
-
     metrics_path: /actuator/prometheus
-
     static_configs:
       - targets: ['app:8080']
+
+  - job_name: 'kafka'
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 1s
+    static_configs:
+      - targets: ['kafka:7071']
