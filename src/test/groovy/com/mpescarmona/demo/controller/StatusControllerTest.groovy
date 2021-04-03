@@ -23,7 +23,7 @@ class StatusControllerTest extends Specification {
         def likes = 1500
         def expectedResult = StatusDto.builder()
                 .delay(delay)
-                .likeEvents(likes)
+                .bandsRated(likes)
                 .build()
         rockBandLikesService.getRockBandLikesCount() >> likes
         failSimulatorService.getDelayInSeconds() >> delay

@@ -31,7 +31,8 @@ public class StatusController {
     public ResponseEntity<StatusDto> getStatus() {
 
         StatusDto statusDto = StatusDto.builder()
-                .likeEvents(rockBandLikesService.getRockBandLikesCount())
+                .bandsRated(rockBandLikesService.getRockBandLikesCount())
+                .topTen(rockBandLikesService.getTopTenRockBandLikes())
                 .delay(failSimulatorService.getDelayInSeconds())
                 .build();
         return ResponseEntity.ok(statusDto);
