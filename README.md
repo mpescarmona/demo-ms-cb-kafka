@@ -25,8 +25,8 @@ To stop the Demo application, just run:
 
 The provided docker-compose file will deploy the following things in your local machine:
  - [Swagger documentation](http://192.168.99.102:8081/swagger-ui.html#) page
- - [Prometheus](http://192.168.99.102:9090) methics UI
- - [Grafana](http://192.168.99.102:3000) with Resilience4j Dashboard. (User: admin, Password: root)  
+ - [Prometheus](http://192.168.99.102:9090) metrics UI
+ - [Grafana](http://192.168.99.102:3000) with **Resilience4j and Kafka Dashboards**. (User: admin, Password: root)  
   
 ### Requirements
 [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/) installed.
@@ -41,6 +41,8 @@ For further reference, please consider the following sections:
 * [Apache Kafka Streams Support](https://docs.spring.io/spring-kafka/docs/current/reference/html/_reference.html#kafka-streams)
 * [Apache Kafka Streams Binding Capabilities of Spring Cloud Stream](https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/#_kafka_streams_binding_capabilities_of_spring_cloud_stream)
 * [Spring Web](https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications)
+* [Monitoring Circuit breaker with prometheus and grafana](https://resilience4j.readme.io/docs/grafana-1#circuitbreaker-dashboard)
+* [Monitoring Kafka with prometheus and grafana](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-monitoring)
 
 ### Guides
 The following guides illustrate how to use some features concretely:
