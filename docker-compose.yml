@@ -26,9 +26,11 @@ services:
     container_name: kafka
     ports:
       - "9092:9092"
+      - "7071:7071"
     environment:
       KAFKA_ADVERTISED_HOST_NAME: 192.168.99.102
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_OPTS: -javaagent:/usr/app/jmx_prometheus_javaagent.jar=7071:/usr/app/prom-jmx-agent-config.yml
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
   prometheus:
