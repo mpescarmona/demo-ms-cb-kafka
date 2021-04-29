@@ -1,0 +1,86 @@
+@startuml
+
+!define colorMicroservice DarkSalmon
+!define colorKafka FFBBBB
+!define colorCircuitBreaker FFBBBB
+!define colorMongoDb FFBBBB
+
+!define colorClosed c1f0e4
+!define colorHalfOpen AntiqueWhite
+!define colorHalfOpenFail ffdd99
+!define colorOpen ffebe7
+
+Actor "Fans"
+Participant microservice
+Database Kafka
+Participant "Circuit Breaker"
+Database MongoDb
+
+group #colorClosed Circuit breaker: CLOSED (Working fine)
+    "Fans" -> microservice: 10,000 fans votes their favorite rock band
+    activate microservice #colorMicroservice
+    microservice --> Kafka: Produces 10,000 voting events in kafka
+    activate Kafka #colorKafka
+    microservice <-- Kafka: Listen vote events from kafka
+    deactivate Kafka
+    microservice -> "Circuit Breaker": Checks circuit breaker status
+    activate "Circuit Breaker" #colorCircuitBreaker
+    microservice <- "Circuit Breaker": retrieves **"CLOSED"**
+    microservice -> MongoDb: Computes the sum of votes and stores the result in mongoDb
+    activate MongoDb #colorMongoDb
+    microservice <- MongoDb: Retrieves the sum of band rock's votes
+    deactivate MongoDb
+    microservice -> "Circuit Breaker": Checks circuit breaker status
+    microservice <- "Circuit Breaker": retrieves **"CLOSED"**
+    deactivate "Circuit Breaker"
+    "Fans" <- microservice: Returns the total of all processed likes
+    deactivate microservice
+end
+...
+group #colorHalfOpen Circuit breaker: HALF-OPEN (Some fails occurred)
+    "Fans" -> microservice: Gets **Top ten** of rock bands
+    activate microservice #colorMicroservice
+    microservice -> "Circuit Breaker": Checks circuit breaker status
+    activate "Circuit Breaker" #colorCircuitBreaker
+    microservice <- "Circuit Breaker": retrieves "true"
+    microservice -> MongoDb: Gets **Top ten** of rock bands from MongoDb
+    activate MongoDb #colorMongoDb
+    microservice <- MongoDb: Returns the **Top ten** very slowly
+    deactivate MongoDb
+    microservice -> "Circuit Breaker": Circuit breaker goes to **"HALF OPEN"** status
+    note left: This slow call DOES NOT exceed the admitted \nnumber of failures in **HALF OPEN** state.
+    microservice <- "Circuit Breaker": retrieves **"HALF-OPEN"**
+    deactivate "Circuit Breaker"
+    "Fans" <- microservice: Returns the **Top Ten** list
+    deactivate microservice
+end
+...
+group #colorHalfOpenFail Circuit breaker: HALF-OPEN (Some fails occurred)
+    "Fans" -> microservice: Gets total rock band's likes
+    activate microservice #colorMicroservice
+    microservice -> "Circuit Breaker": Checks circuit breaker status
+    activate "Circuit Breaker" #colorCircuitBreaker
+    microservice <- "Circuit Breaker": retrieves **"HALF-OPEN"**
+    microservice -> MongoDb: Gets total rock band's likes
+    activate MongoDb #colorMongoDb
+    microservice <- MongoDb: Returns total rock band's likes very slowly
+    deactivate MongoDb
+    microservice -> "Circuit Breaker": Circuit breaker goes to **"OPEN"** status
+    note left: This slow call exceeds the admitted \nnumber of fails in **HALF OPEN** status.\nBecause of that, status goes to **OPEN**
+    microservice <- "Circuit Breaker": retrieves **"OPEN"**
+    deactivate "Circuit Breaker"
+    "Fans" <- microservice: Returns total rock band's likes
+    deactivate microservice
+end
+...
+group #colorOpen Circuit breaker: OPEN (Too many failures to continue)
+    "Fans" -> microservice: Gets likes of "Pink Floyd"
+    activate microservice #colorMicroservice
+    microservice -> "Circuit Breaker": Checks circuit breaker status
+    activate "Circuit Breaker" #colorCircuitBreaker
+    microservice <- "Circuit Breaker": retrieves **"OPEN"**
+    deactivate "Circuit Breaker"
+    "Fans" <- microservice: Returns default response, or recognizable error (for example, ** "- 1" **)
+    deactivate microservice
+end
+@enduml
