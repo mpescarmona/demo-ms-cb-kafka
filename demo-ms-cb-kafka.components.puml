@@ -9,7 +9,7 @@
 !define db 8cb1d9/e0e0eb
 !define ColorFuente(clr) <font color=clr>
 
-title Microservicio con kafka y circuit breaker - Component Diagram
+title Microservicio con kafka y circuit breaker - Diagrama de Componentes
 
 skinparam ArrowThickness 2
 skinparam database {
