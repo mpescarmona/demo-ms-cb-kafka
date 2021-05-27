@@ -22,7 +22,7 @@ public class Consumer {
 
     @StreamListener(target = Sink.INPUT, condition = "headers['type']=='rockBand'")
     public void consumeRockBand(String rockbandName) {
-        log.info("Recieved a rock band as string: " + rockbandName);
+        log.info("Received a rock band as string: " + rockbandName);
 
         RockBandDto rockBand = rockBandLikesService.createOrUpdateLikesByRockBand(rockbandName);
         log.info("rockBand = " + rockBand);
